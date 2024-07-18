@@ -18,7 +18,7 @@ const Footer = () => {
               Contact us
             </div>
             <div className="text-[14px]">
-              Storynest Affiliate Program
+              Extensive Reading Affiliate Program
             </div>
           </div>
           <div>
