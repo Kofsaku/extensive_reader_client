@@ -5,12 +5,17 @@ import Link from "next/link";
 import FeatureCards from '@/components/Dashborad/FeatureCards/page.js';
 import SignupCard from '@/components/Dashborad/SignupCard/page.js';
 import Footer from '@/components/Footer/page.js';
+import AuthModal from '@/components/Auth/page.js';
 
 export default function Dashboard() {
   const bannerImage = "images/bannerType.png";
   const bgImage = "backgroundApp.jpeg";
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+
   const [index, setIndex] = useState(0);
   const Ads = [ 
     "Adventures",
@@ -36,6 +41,12 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="flex flex-col min-h-screen text-white bg-gray-900 bg-[url('/images/backgroundApp.jpeg')] bg-cover bg-center">
+      {modalIsOpen &&
+        <AuthModal
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+        />
+      }
       <header className="flex items-center justify-center px-4 py-6 drop-shadow-2xl bg-gray-800">
         <nav className="hidden md:flex md:items-center md:justify-around space-x-4 w-[90%]">
           <Link href="/">
@@ -50,18 +61,19 @@ export default function Dashboard() {
               Extensive Reading
             </div>
           </Link>
-          <div
+          <Link
+            href="/home"
             className="transition-colors cursor-pointer font-semibold"
-            onClick={() => router.push("/homepage")}
+            // onClick={() => router.push("/homepage")}
           >
             Home
-          </div>
+          </Link>
           <Link href="#">
             <div className="transition-colors cursor-pointer font-semibold">
               Features
             </div>
           </Link>
-          <Link href="#">
+          <Link href="/home">
             <div className="transition-colors cursor-pointer font-semibold">
               Template
             </div>
@@ -82,20 +94,18 @@ export default function Dashboard() {
           </div>
         </nav>
         {isLoggedIn ? (
-          <Link
-            onClick={handleLogout}
+          <div
             className="transition-colors text-lg font-bold hidden md:flex"
-            href="/"
           >
             Logout
-          </Link>
+          </div>
         ) : (
-          <Link
-            className="transition-colors font-bold text-lg hidden md:flex"
-            href="/login"
+          <div
+            className="transition-colors font-bold text-lg hidden md:flex cursor-pointer"
+            onClick={() => setModalIsOpen(true)}
           >
             Login
-          </Link>
+          </div>
         )}
       </header>
       <main className="flex flex-col items-center justify-center py-24 space-y-8 text-gray-300">
