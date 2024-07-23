@@ -3,7 +3,7 @@ import HomeContanier from '@/components/HomePage/HomeContainer/page.js';
 import MyStoires from '@/components/HomePage/MyStories/page.js';
 import Story from '@/components/HomePage/MyStories/story.js';
 
-const MainSection = ({section, setSection}) => {
+const MainSection = ({section, setSection, story}) => {
   console.log("sectionsectionsectionsection", section)
   return (
     <>
@@ -18,7 +18,9 @@ const MainSection = ({section, setSection}) => {
         />
       }
       {section === 3 &&
-        <Story />
+        <Story 
+          story={story}
+        />
       }
     </>
   );

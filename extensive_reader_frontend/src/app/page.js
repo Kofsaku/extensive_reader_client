@@ -10,7 +10,6 @@ import AuthModal from '@/components/Auth/page.js';
 export default function Dashboard() {
   const bannerImage = "images/bannerType.png";
   const bgImage = "backgroundApp.jpeg";
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);

@@ -11,7 +11,7 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     width: '700px',
-    height: '600px',
+    height: '500px',
     padding: '0px',
     borderRadius: '0.5rem',
     boxShadow: '0 10px 15px rgba(0, 0, 0, 0.1)',
@@ -21,7 +21,7 @@ const customStyles = {
   },
 };
 
-const Sidebar = ({section, setSection}) => {
+const Sidebar = ({setSection, setStory}) => {
   
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const openModal = () => setModalIsOpen(true);
@@ -35,7 +35,11 @@ const Sidebar = ({section, setSection}) => {
         style={customStyles}
         contentLabel="Login Modal"
       >
-        <GenerateStory />
+        <GenerateStory
+          closeModal={closeModal}
+          setSection={setSection}
+          setStory={setStory}
+        />
       </Modal>
       <div className="flex flex-col h-full min-h-screen w-64 bg-gray-800 text-white p-4 sticky top-0">
         <div className="flex items-center justify-between mb-6">

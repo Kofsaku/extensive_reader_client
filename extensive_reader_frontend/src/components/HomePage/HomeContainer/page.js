@@ -3,6 +3,7 @@ import Footer from '../../Footer/page.js';
 import FeatureCards from '../RecentStories/page.js';
 import GenerateStory from '@/components/HomePage/HomeContainer/GenerateStory/GenerateStoryModal.js';
 import Modal from 'react-modal';
+import ChatGPT from "@/components/Chatgpt/page.js";
 
 const customStyles = {
   content: {
