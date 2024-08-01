@@ -41,6 +41,7 @@ const AuthModal = ({ modalIsOpen, closeModal }) => {
       {type === 1 &&
         <Login
           setType={setType}
+          closeModal={closeModal}
         />
       }
       {type === 2 &&

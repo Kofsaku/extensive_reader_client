@@ -1,29 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Login = ({setType}) => {
+const Login = ({ setType, closeModal }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      // Check if the response is in the expected format
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Unexpected response format: ${text}`);
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid email or password');
+      }
+
+      // Save the JWT token to local storage
+      localStorage.setItem('token', data.token);
+      closeModal()
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <h2 className="text-2xl font-bold text-center mb-6 text-purple-600">Extensive Reading</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+            required
           />
         </div>
         <div className="mb-4">
           <input
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+            required
           />
         </div>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <button
           type="submit"
           className="w-full py-2 mb-4 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-600"
+          disabled={loading}
         >
-          Sign in
+          {loading ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
       <div className="flex items-center justify-center mb-4">
@@ -39,8 +89,8 @@ const Login = ({setType}) => {
         Sign in with Google
       </button>
       <div className="flex justify-between">
-        <div href="#" className="text-sm text-gray-500 hover:text-gray-700">Forgot Password</div>
-        <div href="#" className="text-sm text-gray-500 hover:text-gray-700" onClick={() => setType(2)}>Create account</div>
+        <div className="text-sm text-gray-500 hover:text-gray-700">Forgot Password</div>
+        <div className="text-sm text-gray-500 hover:text-gray-700" onClick={() => setType(2)}>Create account</div>
       </div>
     </>
   );
