@@ -2,6 +2,15 @@ const Story = require('../models/Story');
 
 // Create a new story
 const createStory = async (req, res) => {
+  console.log("req.bodyreq.body", req.body)
+  const { language, genre, readerAge, difficulty } = req.body.data.prompt;
+  const { result } = req.body.data;
+  console.log("=================result", result)
+  console.log("=================language", language)
+  console.log("=================genre", genre)
+  console.log("=================readerAge", readerAge)
+  console.log("=================difficulty", difficulty)
+
   try {
     const story = new Story(req.body);
     await story.save();

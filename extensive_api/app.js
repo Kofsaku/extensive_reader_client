@@ -16,7 +16,7 @@ app.use(cors());
 
 // Routes
 app.use('/api', userRoutes);
-app.use('/api/stories', storyRoutes);
+app.use('/api/story', storyRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

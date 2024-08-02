@@ -2,12 +2,15 @@
 import React, { useState, useEffect } from "react";
 import TextTransition, { presets } from "react-text-transition";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import FeatureCards from '@/components/Dashborad/FeatureCards/page.js';
 import SignupCard from '@/components/Dashborad/SignupCard/page.js';
 import Footer from '@/components/Footer/page.js';
 import AuthModal from '@/components/Auth/page.js';
+import Cookies from 'js-cookie';
 
 export default function Dashboard() {
+  const router = useRouter();
   const bannerImage = "images/bannerType.png";
   const bgImage = "backgroundApp.jpeg";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,6 +37,26 @@ export default function Dashboard() {
     "Comedies",
     "Fantasies"
   ];
+
+  useEffect(() => {
+    const intervalId = setInterval(() => setIndex((index) => index + 1), 3000);
+    return () => clearTimeout(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken') || Cookies.get('authToken');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    Cookies.remove('authToken');
+    setIsLoggedIn(false);
+    window.location.reload(); // Refresh the page to ensure all states are updated
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => setIndex((index) => index + 1), 3000);
     return () => clearTimeout(intervalId);
@@ -95,6 +118,7 @@ export default function Dashboard() {
         {isLoggedIn ? (
           <div
             className="transition-colors text-lg font-bold hidden md:flex"
+            onClick={() => handleLogout()}
           >
             Logout
           </div>

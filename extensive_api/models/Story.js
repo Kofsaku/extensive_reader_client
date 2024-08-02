@@ -21,10 +21,6 @@ const storySchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	storyIdeas: {
-		type: String,
-		required: true,
-	},
 	title: {
 		type: String,
 		required: true,

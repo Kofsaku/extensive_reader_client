@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 const Login = ({ setType, closeModal }) => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,22 +23,19 @@ const Login = ({ setType, closeModal }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      // Check if the response is in the expected format
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        throw new Error(`Unexpected response format: ${text}`);
-      }
-
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message || 'Invalid email or password');
       }
 
-      // Save the JWT token to local storage
-      localStorage.setItem('token', data.token);
-      closeModal()
+      // Save the JWT token to local storage and cookies
+      localStorage.setItem('authToken', data.token);
+      Cookies.set('authToken', data.token, { expires: 1 }); // Expires in 1 day
+      closeModal();
+
+      // Reload the page to ensure cookies are sent in subsequent requests
+      window.location.reload()
     } catch (error) {
       setError(error.message);
     } finally {

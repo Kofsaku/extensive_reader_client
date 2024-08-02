@@ -23,7 +23,7 @@ const customStyles = {
 
 const Sidebar = ({setSection, setStory}) => {
   
-  const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
 
