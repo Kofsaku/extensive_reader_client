@@ -75,7 +75,7 @@ export async function POST(request) {
       }
     );
 
-    if (backendResponse.status === 200) {
+    if (backendResponse.status === 201) {
       // Redirect or handle successful posting to the backend
       return NextResponse.json({ result: response.data.choices[0].message.content });
     } else {

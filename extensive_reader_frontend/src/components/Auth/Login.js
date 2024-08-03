@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const Login = ({ setType, closeModal }) => {
   const router = useRouter();
@@ -26,10 +27,12 @@ const Login = ({ setType, closeModal }) => {
       const data = await response.json();
 
       if (!response.ok) {
+        toast.error('Invalid email or password');
         throw new Error(data.message || 'Invalid email or password');
       }
 
       // Save the JWT token to local storage and cookies
+      toast.success('Login Authenticated!');
       localStorage.setItem('authToken', data.token);
       Cookies.set('authToken', data.token, { expires: 1 }); // Expires in 1 day
       closeModal();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const GenerateStory = ({setStory, setSection, closeModal}) => {
   const [language, setLanguage] = useState('English');
@@ -21,7 +22,9 @@ const GenerateStory = ({setStory, setSection, closeModal}) => {
     };
     console.log('Generated Story Data:', storyData);
     try {
+      toast.success("Creating Story....")
       const res = await axios.post('/api/chatgpt', { prompt: storyData });
+      toast.success("Story Created!")
       setStory(res.data.result);
       setSection(3)
       closeModal()

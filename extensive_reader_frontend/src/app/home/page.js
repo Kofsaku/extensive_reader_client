@@ -1,30 +1,13 @@
 'use client'
-import React, { useState } from "react";
-import SideBar from '@/components/HomePage/Sidebar.js'
-import MainSection from '@/components/HomePage/MainSection.js'
+import React from 'react';
+import withSidebar from '@/components/withSidebar/page'; // Import the HOC
+import MainSection from '@/components/HomePage/MainSection.js'; // Import MainSection
+
+// Wrap MainSection with the HOC
+const MainSectionWithSidebar = withSidebar(MainSection);
 
 const Home = () => {
-  const [section, setSection] = useState(1);
-  const [story, setStory] = useState('');
-  return (
-    <>
-      <div className="flex">
-        <div className="min-w-fit">
-          <SideBar
-            section={section}
-            setSection={setSection}
-            setStory={setStory}
-          />
-        </div>
-        <div className="flex-grow">
-          <MainSection
-            section={section}
-            setSection={setSection}
-            story={story}
-          />
-        </div>
-      </div>
-    </>
-  )
-}
+  return <MainSectionWithSidebar />;
+};
+
 export default Home;

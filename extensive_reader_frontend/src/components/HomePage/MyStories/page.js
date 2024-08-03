@@ -1,5 +1,7 @@
 import React from "react";
-import Stories from '../RecentStories/page.js'
+import Stories from '../RecentStories/page.js';
+const axios = require('axios');
+
 const MyStoires = ({setSection}) => {
   return (
     <div className="text-white mt-4">

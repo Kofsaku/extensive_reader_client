@@ -8,6 +8,7 @@ import SignupCard from '@/components/Dashborad/SignupCard/page.js';
 import Footer from '@/components/Footer/page.js';
 import AuthModal from '@/components/Auth/page.js';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function Dashboard() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
+  const { query } = router;
 
   const [index, setIndex] = useState(0);
   const Ads = [ 
@@ -54,6 +56,7 @@ export default function Dashboard() {
     localStorage.removeItem('authToken');
     Cookies.remove('authToken');
     setIsLoggedIn(false);
+    toast.success('Loged out!');
     window.location.reload(); // Refresh the page to ensure all states are updated
   };
 
