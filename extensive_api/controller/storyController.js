@@ -5,15 +5,17 @@ const createStory = async (req, res) => {
   console.log("req.bodyreq.body", req.body)
   const { language, genre, readerAge, difficulty } = req.body.data.prompt;
   const { result } = req.body.data;
-  console.log("=================result", result)
-  console.log("=================language", language)
-  console.log("=================genre", genre)
-  console.log("=================readerAge", readerAge)
-  console.log("=================difficulty", difficulty)
-
+  const newStory = {
+    language,
+    genre,
+    readerAge,
+    difficulty,
+    story: result
+  }
   try {
-    const story = new Story(req.body);
-    await story.save();
+    const story = new Story(newStory);
+    const createdStory = await story.save();
+    console.log("createdStorycreatedStory", createdStory)
     res.status(201).json(story);
   } catch (error) {
     res.status(400).json({ message: error.message });

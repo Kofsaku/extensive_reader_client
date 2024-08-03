@@ -1,10 +1,37 @@
-import React from "react";
+'use-client'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const Story = ({story}) => {
-  console.log(story)
-  return (
+const Story = () => {
+  const searchParams = useSearchParams()
+  const [storyData, setStoryData] = useState(null);
+
+  useEffect(() => {
+    const fetchStories = async (id) => {
+      try {
+        const id = searchParams.get('id')
+        const jwtToken = process.env.JWT_SECRET;
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/story/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`, // Include JWT in the Authorization header
+            'Content-Type': 'application/json', // Specify the content type
+          },
+        });
+
+        setStoryData(response.data.story);
+      } catch (error) {
+        console.error('Error fetching stories:', error);
+      }
+    };
+    
+    fetchStories();
+  }, []);
+
+  return (  
     <div className="text-white px-10">
-    {!story &&
+    {/* {!storyData &&
       <>
         <div className="flex justify-center items-center text-[30px] mt-10 mb-5">Wings of Valor</div> 
         <div>
@@ -20,11 +47,11 @@ const Story = ({story}) => {
           And with that, the Dauntless Duchess lurched forward, gathering speed as it thundered down the runway and into the uncertain skies above. For Granger and his crew, there was no turning back now – their baptism by fire had begun.
         </div>
       </>
-    }
-    {story &&
+    } */}
+    {storyData &&
       <>
         <div className="mt-20">
-          {story}
+          {storyData}
         </div>
       </>
     }

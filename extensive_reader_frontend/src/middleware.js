@@ -1,6 +1,7 @@
 // middleware/authMiddleware.js
 import { NextResponse } from 'next/server';
 import { parse } from 'cookie';
+import { toast } from 'react-toastify';
 
 export function middleware(req) {
   const url = req.nextUrl.clone();
@@ -12,6 +13,7 @@ export function middleware(req) {
 
   try {
     if (!token && url.pathname !== '/') {
+      toast.error("User is not authenticated!")
       console.log("User is not authenticated, redirecting to home.");
       url.pathname = '/';
       return NextResponse.redirect(url);
