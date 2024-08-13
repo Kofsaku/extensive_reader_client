@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Signup = ({ setType }) => {
   const [name, setName] = useState('');
@@ -11,7 +12,7 @@ const Signup = ({ setType }) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
+    
     try {
       const response = await fetch('http://localhost:3000/api/register', {
         method: 'POST',
@@ -21,14 +22,15 @@ const Signup = ({ setType }) => {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
+        toast.error(data.message || 'Something went wrong');
         throw new Error(data.message || 'Something went wrong');
       }
+      toast.success('User Created!');
 
       setType(1);
     } catch (error) {
+      toast.error('Try some other email or password');
       setError(error.message);
     } finally {
       setLoading(false);

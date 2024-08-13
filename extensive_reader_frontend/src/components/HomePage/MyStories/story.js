@@ -8,10 +8,10 @@ const Story = () => {
   const [storyData, setStoryData] = useState(null);
 
   useEffect(() => {
-    const fetchStories = async (id) => {
+    const fetchStory = async (id) => {
       try {
         const id = searchParams.get('id')
-        const jwtToken = process.env.JWT_SECRET;
+        const jwtToken = localStorage.getItem('authToken') || Cookies.get('authToken');
 
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/story/${id}`, {
           headers: {
@@ -20,13 +20,13 @@ const Story = () => {
           },
         });
 
-        setStoryData(response.data.story);
+        setStoryData(response.data);
       } catch (error) {
         console.error('Error fetching stories:', error);
       }
     };
     
-    fetchStories();
+    fetchStory();
   }, []);
 
   return (  
@@ -51,7 +51,10 @@ const Story = () => {
     {storyData &&
       <>
         <div className="mt-20">
-          {storyData}
+        <div className="flex justify-center items-center text-[30px] mt-10 mb-5">{storyData.title}</div> 
+        <div>
+          {storyData.desc}
+        </div>
         </div>
       </>
     }

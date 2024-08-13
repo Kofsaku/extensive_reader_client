@@ -29,6 +29,19 @@ const storySchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+		required: true,
+	},
+	public: {
+		type: Boolean,
+		required: false,
+	},
+	fav: {
+		type: Boolean,
+		required: false,
+	}
 });
 
 

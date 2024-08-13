@@ -4,7 +4,6 @@ import MyStoires from '@/components/HomePage/MyStories/page.js';
 import Story from '@/components/HomePage/MyStories/story.js';
 
 const MainSection = ({section, setSection, story}) => {
-  console.log("sectionsectionsectionsection", section)
   return (
     <>
       {section === 1 &&
