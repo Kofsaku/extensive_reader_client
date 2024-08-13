@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenerateStory from '@/components/HomePage/HomeContainer/GenerateStory/GenerateStoryModal.js';
 import Modal from 'react-modal';
+import Link from "next/link";
 
 const customStyles = {
   content: {
@@ -43,7 +44,12 @@ const Sidebar = ({setSection, setStory}) => {
       </Modal>
       <div className="flex flex-col h-full min-h-screen w-64 bg-gray-800 text-white p-4 sticky top-0">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold">Extensive Reading</h1>
+          <Link
+            className="text-xl font-bold"
+            href="/" 
+          >
+            Extensive Reading
+          </Link>
         </div>
 
         <button
@@ -55,9 +61,9 @@ const Sidebar = ({setSection, setStory}) => {
 
         <nav className="mb-6">
           <ul>
-            <li
+            <Link
               className="flex items-center mb-4 cursor-pointer"
-              onClick={() => setSection(1)}
+              href="/home" 
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -74,10 +80,10 @@ const Sidebar = ({setSection, setStory}) => {
                 />
               </svg>
               Home
-            </li>
-            <li
+            </Link>
+            <Link
               className="flex items-center mb-4 cursor-pointer"
-              onClick={() => setSection(2)}
+              href="/my_story"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -94,8 +100,11 @@ const Sidebar = ({setSection, setStory}) => {
                 />
               </svg>
               My Stories
-            </li>
-            <li className="flex items-center mb-4">
+            </Link>
+            <Link
+              className="flex items-center mb-4 cursor-pointer"
+              href="/favourite_stories"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -110,8 +119,28 @@ const Sidebar = ({setSection, setStory}) => {
                   d="M3 7h14M3 12h10m7 8h.01"
                 />
               </svg>
-              Discover
-            </li>
+              Favourite Stories
+            </Link>
+            <Link
+              className="flex items-center mb-4 cursor-pointer"
+              href="/public_stories"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6 mr-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 7h14M3 12h10m7 8h.01"
+                />
+              </svg>
+              Public Stories
+            </Link>
           </ul>
         </nav>
 

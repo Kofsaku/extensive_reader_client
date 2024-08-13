@@ -41,7 +41,8 @@ export async function POST(request) {
     const cookies = cookie.parse(request.headers.get('cookie') || '');
     const authToken = cookies.authToken;
 
-    const promptInput = `The passage should be around ${prompt.words} words long. Create an English learning passage for learners on the topic of ${prompt.genre} suitable for the age ${prompt.readerAge} person, written as a single coherent ${prompt.genre} text. The passage must have an intriguing and fascinating title that makes readers want to start reading immediately. The body of the passage should be a continuous flow of text using simple vocabulary understandable by ${prompt.difficulty} person, with no subheadings, bullet points, or standalone lines. The writing should be engaging and captivating, so ${prompt.difficulty} student readers can't wait to read the entire passage from start to finish. Also here is the brief idea for the story: ${prompt.storyIdeas}`;
+    // const promptInput = `The passage should be around ${prompt.words} words long. Create an English learning passage for learners on the topic of ${prompt.genre} suitable for the age ${prompt.readerAge} person, written as a single coherent ${prompt.genre} text. The passage must have an intriguing and fascinating title that makes readers want to start reading immediately. The body of the passage should be a continuous flow of text using simple vocabulary understandable by ${prompt.difficulty} person, with no subheadings, bullet points, or standalone lines. The writing should be engaging and captivating, so ${prompt.difficulty} student readers can't wait to read the entire passage from start to finish. Also here is the brief idea for the story: ${prompt.storyIdeas}`;
+    const promptInput = `The passage should be around ${prompt.words} words long. Create an English learning passage for learners on the topic of ${prompt.genre} suitable for the age ${prompt.readerAge} person, written as a single coherent ${prompt.genre} text. The passage must have an intriguing and fascinating title that makes readers want to start reading immediately. The body of the passage should be a continuous flow of text using simple vocabulary understandable by ${prompt.difficulty} person, with no subheadings, bullet points, or standalone lines. The writing should be engaging and captivating, so ${prompt.difficulty} student readers can't wait to read the entire passage from start to finish. Also here is the brief idea for the story: ${prompt.storyIdeas}. Please provide the title and the body of the passage separately. Format the response as 'Title: <title here>\n\nBody: <body here>'`;
 
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
@@ -57,7 +58,17 @@ export async function POST(request) {
       }
     );
 
-    const result = response.data.choices[0].message.content;
+    const completion = response.data.choices[0].message.content;
+    const [titlePart, bodyPart] = completion.split('\n\nBody: ');
+
+    const title = titlePart.replace('Title: ', '').trim();
+    const desc = bodyPart.trim();
+
+    
+    const result = {
+      title,
+      desc
+    };
     const data = {
       result,
       prompt
@@ -73,11 +84,11 @@ export async function POST(request) {
           'Authorization': `Bearer ${authToken}`,
         },
       }
-    );
-
-    if (backendResponse.status === 200) {
+    ); 
+    console.log("backendResponsebackendResponse", backendResponse)
+    if (backendResponse.status === 201) {
       // Redirect or handle successful posting to the backend
-      return NextResponse.json({ result: response.data.choices[0].message.content });
+      return NextResponse.json({ id: backendResponse.data._id });
     } else {
       return NextResponse.json({ error: 'Failed to save prompt on backend' }, { status: 500 });
     }
