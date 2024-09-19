@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { SessionWrapper } from '../components/Session/SessionWrapper';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,8 +14,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <ToastContainer />
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {/* Wrap the children with SessionWrapper in a client component */}
+        <SessionWrapper>
+          {children}
+        </SessionWrapper>
+        <ToastContainer />
+      </body>
     </html>
   );
 }
