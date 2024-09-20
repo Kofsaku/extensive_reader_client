@@ -73,8 +73,7 @@ export async function POST(request) {
       result,
       prompt
     }
-    const backendResponse = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/story`,
+    const backendResponse = await axios.post('http://localhost:3000/api/story',
       {
         data,
       },

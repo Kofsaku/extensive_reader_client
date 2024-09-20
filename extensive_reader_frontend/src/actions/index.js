@@ -4,7 +4,7 @@ import { signIn, signOut } from "next-auth/react"; // Correct import
 
 export async function doSocialLogin(formData) {
     const action = formData.get('action');
-    await signIn(action, { callbackUrl: "/home" });
+    await signIn(action, { callbackUrl: "/asldkjaldk" });
 }
 
 export async function doLogout() {
