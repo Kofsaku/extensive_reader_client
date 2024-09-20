@@ -61,6 +61,42 @@ router.get('/user', auth, async (req, res) => {
     res.status(500).json({ message: 'Error fetching user information' });
   }
 });
-// });
+
+router.post('/google-auth', async (req, res) => {
+  try {
+		console.log("=====================")
+    const { name, email } = req.body;
+
+    // Check if the user already exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // If user doesn't exist, create a new user
+      user = new User({
+        name,
+        email,
+        googleId: email, // Using Google email as ID for simplicity
+        auth_provider: 'google',
+      });
+
+      await user.save();
+    }
+
+    // Generate JWT token for the user
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: '24h',
+    });
+
+    // Return the JWT token to the frontend
+    res.status(200).json({ token });
+  } catch (error) {
+    if (error.code === 11000) {
+      res.status(400).json({ message: 'User already exists' });
+    } else {
+      res.status(500).send({ message: 'Error saving user', error: error.message });
+    }
+  }
+});
+
 
 module.exports = router;

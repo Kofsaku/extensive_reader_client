@@ -4,12 +4,14 @@ const auth = (req, res, next) => {
   const authHeader = req.header('Authorization');
 
   if (!authHeader) {
+    console.log("Access denied. No token provided.")
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
 
   const token = authHeader.startsWith('Bearer ') ? authHeader.replace('Bearer ', '') : authHeader;
 
   if (!token) {
+    console.log("Access denied. Invalid token format.")
     return res.status(401).json({ message: 'Access denied. Invalid token format.' });
   }
 
@@ -18,6 +20,7 @@ const auth = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    console.log("Invalid token.")
     res.status(400).json({ message: 'Invalid token.' });
   }
 };

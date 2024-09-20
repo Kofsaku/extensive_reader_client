@@ -9,8 +9,22 @@ import Footer from '@/components/Footer/page.js';
 import AuthModal from '@/components/Auth/page.js';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { getSession } from 'next-auth/react';
 
 export default function Dashboard() {
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession(); // Use getSession from next-auth/react
+      console.log("User session after successful Google sign-in:", session);
+      if (session.jwt ) {
+        localStorage.setItem('authToken', session.jwt);
+        Cookies.set('authToken', session.jwt, { expires: 1 });
+      }
+    };
+
+    // Call the async function inside useEffect
+    fetchSession();
+  }, []);
   const router = useRouter();
   const bannerImage = "images/bannerType.png";
   const bgImage = "backgroundApp.jpeg";
