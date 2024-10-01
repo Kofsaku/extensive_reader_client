@@ -5,11 +5,11 @@
 //   console.log(story)
 //   // toast.success('This is a success message!');
 //   return (
-    
+
 //     <div className="text-white px-10">
 //     {!story &&
 //       <>
-//         <div className="flex justify-center items-center text-[30px] mt-10 mb-5">Wings of Valor</div> 
+//         <div className="flex justify-center items-center text-[30px] mt-10 mb-5">Wings of Valor</div>
 //         <div>
 //           Chapter 1: Baptism by Fire
 //           The pre-dawn silence at the Thorpe Abbotts airbase was shattered by the thunderous roar of engines as the mighty B-17 bombers rumbled to life. Lt. Henry Granger, his heart pounding in his chest, tightened his grip on the controls of his aircraft, the "Dauntless Duchess." At just 24 years old, he was one of the youngest pilots assigned to the elite 100th Bomb Group, known throughout the Allied forces as the "Bloody Hundredth" for their daring and often devastating bombing raids over occupied Europe.
@@ -35,12 +35,11 @@
 //   )
 // }
 // export default Story;
- 
 
-'use client'
-import React from 'react';
-import withSidebar from '@/components/withSidebar/page'; // Import the HOC
-import StoryDesc from '@/components/HomePage/MyStories/story'; // Import MainSection
+"use client";
+import React from "react";
+import withSidebar from "@/components/withSidebar/page"; // Import the HOC
+import StoryDesc from "@/components/HomePage/MyStories/story"; // Import MainSection
 
 // Wrap MainSection with the HOC
 const MainStoryWithSidebar = withSidebar(StoryDesc);

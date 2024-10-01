@@ -1,24 +1,24 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import TextTransition, { presets } from "react-text-transition";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import FeatureCards from '@/components/Dashborad/FeatureCards/page.js';
-import SignupCard from '@/components/Dashborad/SignupCard/page.js';
-import Footer from '@/components/Footer/page.js';
-import AuthModal from '@/components/Auth/page.js';
-import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
-import { getSession } from 'next-auth/react';
+import FeatureCards from "@/components/Dashborad/FeatureCards/page.js";
+import SignupCard from "@/components/Dashborad/SignupCard/page.js";
+import Footer from "@/components/Footer/page.js";
+import AuthModal from "@/components/Auth/page.js";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import { getSession } from "next-auth/react";
 
 export default function Dashboard() {
   useEffect(() => {
     const fetchSession = async () => {
       const session = await getSession(); // Use getSession from next-auth/react
       console.log("User session after successful Google sign-in:", session);
-      if (session.jwt ) {
-        localStorage.setItem('authToken', session.jwt);
-        Cookies.set('authToken', session.jwt, { expires: 1 });
+      if (session.jwt) {
+        localStorage.setItem("authToken", session.jwt);
+        Cookies.set("authToken", session.jwt, { expires: 1 });
       }
     };
 
@@ -35,7 +35,7 @@ export default function Dashboard() {
   const { query } = router;
 
   const [index, setIndex] = useState(0);
-  const Ads = [ 
+  const Ads = [
     "Adventures",
     "Characters",
     "Novels",
@@ -51,7 +51,7 @@ export default function Dashboard() {
     "Mysteries",
     "Drama",
     "Comedies",
-    "Fantasies"
+    "Fantasies",
   ];
 
   useEffect(() => {
@@ -60,17 +60,17 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken') || Cookies.get('authToken');
+    const token = localStorage.getItem("authToken") || Cookies.get("authToken");
     if (token) {
       setIsLoggedIn(true);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    Cookies.remove('authToken');
+    localStorage.removeItem("authToken");
+    Cookies.remove("authToken");
     setIsLoggedIn(false);
-    toast.success('Loged out!');
+    toast.success("Loged out!");
     window.location.reload(); // Refresh the page to ensure all states are updated
   };
 
@@ -80,12 +80,9 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="flex flex-col min-h-screen text-white bg-gray-900 bg-[url('/images/backgroundApp.jpeg')] bg-cover bg-center">
-      {modalIsOpen &&
-        <AuthModal
-          modalIsOpen={modalIsOpen}
-          closeModal={closeModal}
-        />
-      }
+      {modalIsOpen && (
+        <AuthModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      )}
       <header className="flex items-center justify-center px-4 py-6 drop-shadow-2xl bg-gray-800">
         <nav className="hidden md:flex md:items-center md:justify-around space-x-4 w-[90%]">
           <Link href="/">
@@ -179,9 +176,10 @@ export default function Dashboard() {
           </div>
           <div className="home-hero-text">
             <p className="static m-0 text-gray-300">
-              Powered by AI 
+              Powered by AI
               <br />
-              Next-Gen Content Creation: AI-Enhanced Writing, Character Interaction, Limitless Creativity
+              Next-Gen Content Creation: AI-Enhanced Writing, Character
+              Interaction, Limitless Creativity
             </p>
           </div>
         </div>

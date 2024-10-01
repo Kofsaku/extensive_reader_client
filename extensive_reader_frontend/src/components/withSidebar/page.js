@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import SideBar from '@/components/HomePage/Sidebar.js';
+import React, { useState } from "react";
+import SideBar from "@/components/HomePage/Sidebar.js";
 
 const withSidebar = (WrappedComponent) => {
-  return (props) => {
+  const WithSidebar = (props) => {
     const [section, setSection] = useState(1);
-    const [story, setStory] = useState('');
+    const [story, setStory] = useState("");
 
     return (
       <div className="flex">
@@ -26,6 +26,10 @@ const withSidebar = (WrappedComponent) => {
       </div>
     );
   };
+
+  WithSidebar.displayName = `WithSidebar(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
+
+  return WithSidebar;
 };
 
 export default withSidebar;
