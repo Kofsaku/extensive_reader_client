@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+// const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const storyRoutes = require("./routes/storyRoutes");
 
@@ -12,12 +12,12 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: "*",
-    exposedHeaders: ["Authorization"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*",
+//     exposedHeaders: ["Authorization"],
+//   })
+// );
 
 // Routes
 app.use("/api", userRoutes);
