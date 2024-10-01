@@ -1,37 +1,42 @@
-'use-client'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+"use-client";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Suspense } from "react";
 
 const Story = () => {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const [storyData, setStoryData] = useState(null);
 
   useEffect(() => {
     const fetchStory = async (id) => {
       try {
-        const id = searchParams.get('id')
-        const jwtToken = localStorage.getItem('authToken') || Cookies.get('authToken');
+        const id = searchParams.get("id");
+        const jwtToken =
+          localStorage.getItem("authToken") || Cookies.get("authToken");
 
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/story/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${jwtToken}`, // Include JWT in the Authorization header
-            'Content-Type': 'application/json', // Specify the content type
-          },
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/story/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include JWT in the Authorization header
+              "Content-Type": "application/json", // Specify the content type
+            },
+          }
+        );
 
         setStoryData(response.data);
       } catch (error) {
-        console.error('Error fetching stories:', error);
+        console.error("Error fetching stories:", error);
       }
     };
-    
+
     fetchStory();
   }, []);
 
-  return (  
+  return (
     <div className="text-white px-10">
-    {/* {!storyData &&
+      {/* {!storyData &&
       <>
         <div className="flex justify-center items-center text-[30px] mt-10 mb-5">Wings of Valor</div> 
         <div>
@@ -48,18 +53,24 @@ const Story = () => {
         </div>
       </>
     } */}
-    {storyData &&
-      <>
-        <div className="mt-20">
-        <div className="flex justify-center items-center text-[30px] mt-10 mb-5">{storyData.title}</div> 
-        <div>
-          {storyData.desc}
-        </div>
-        </div>
-      </>
-    }
+      {storyData && (
+        <>
+          <div className="mt-20">
+            <div className="flex justify-center items-center text-[30px] mt-10 mb-5">
+              {storyData.title}
+            </div>
+            <div>{storyData.desc}</div>
+          </div>
+        </>
+      )}
     </div>
-  )
-}
-export default Story;
- 
+  );
+};
+
+const StoryWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Story />
+  </Suspense>
+);
+
+export default StoryWrapper;
