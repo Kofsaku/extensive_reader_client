@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: "*",
+    exposedHeaders: ["Authorization"],
   })
 );
 
