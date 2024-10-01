@@ -10,14 +10,16 @@ const storyRoutes = require("./routes/storyRoutes");
 const app = express();
 const port = process.env.PORT || 3000;
 
+const corsOptions = {
+  origin: "*",
+  methods: "*",
+  allowedHeaders: "*",
+};
+
+app.use(cors(corsOptions));
+
 // Middleware
 app.use(bodyParser.json());
-// app.use(
-//   cors({
-//     origin: "*",
-//     exposedHeaders: ["Authorization"],
-//   })
-// );
 
 // Routes
 app.use("/api", userRoutes);
