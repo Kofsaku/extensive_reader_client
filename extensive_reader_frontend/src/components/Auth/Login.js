@@ -3,8 +3,12 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { signIn } from "next-auth/react";
+import StipeCheckout from '../../components/Stripe/StripeCheckout';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 const Login = ({ setType, closeModal }) => {
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,7 +54,10 @@ const Login = ({ setType, closeModal }) => {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-center mb-6 text-purple-600">Extensive Reading</h2>
+      <Elements stripe={stripePromise}>
+        <StipeCheckout />
+      </Elements>
+      {/* <h2 className="text-2xl font-bold text-center mb-6 text-purple-600">Extensive Reading</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <input
@@ -97,7 +104,7 @@ const Login = ({ setType, closeModal }) => {
       <div className="flex justify-between">
         <div className="text-sm text-gray-500 hover:text-gray-700">Forgot Password</div>
         <div className="text-sm text-gray-500 hover:text-gray-700" onClick={() => setType(2)}>Create account</div>
-      </div>
+      </div> */}
     </>
   );
 };
