@@ -1,11 +1,15 @@
-import React from 'react';
+import React from "react";
 
-const Signup = ({setType}) => {
+const Signup = ({ setType }) => {
   return (
     <>
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-purple-600 mb-4">Extensive Reading</h2>
-        <h3 className="text-xl font-semibold mb-2">Let's create your account</h3>
+        <h2 className="text-2xl font-bold text-purple-600 mb-4">
+          Extensive Reading
+        </h2>
+        <h3 className="text-xl font-semibold mb-2">
+          Let&rsquo;s create your account
+        </h3>
         <p className="text-gray-500 mb-6">Signing up is fast and free.</p>
       </div>
       <form>
@@ -42,7 +46,12 @@ const Signup = ({setType}) => {
       </p>
       <div className="flex justify-center mt-4">
         <span className="text-sm text-gray-500">Already have an account?</span>
-        <div className="ml-1 text-sm text-purple-600 hover:underline" onClick={() => setType(1)}>Sign in</div>
+        <div
+          className="ml-1 text-sm text-purple-600 hover:underline"
+          onClick={() => setType(1)}
+        >
+          Sign in
+        </div>
       </div>
     </>
   );

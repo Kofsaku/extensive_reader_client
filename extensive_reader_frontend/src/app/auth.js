@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const authOptions = {
   providers: [
@@ -20,28 +20,31 @@ export const authOptions = {
     async session({ session, token, user }) {
       try {
         // Send the session user info to your backend to get a JWT
-        const response = await fetch('http://localhost:3000/api/google-auth', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: session.user.name,
-            email: session.user.email,
-            auth_provider: 'google',
-          }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/google-auth`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: session.user.name,
+              email: session.user.email,
+              auth_provider: "google",
+            }),
+          }
+        );
 
         const data = await response.json();
-        console.log("datadatadatadatadatadatadata", data)
+        console.log("datadatadatadatadatadatadata", data);
         if (response.ok) {
           // Store the JWT in session
           session.jwt = data.token;
         } else {
-          console.error('Failed to save user or generate token');
+          console.error("Failed to save user or generate token");
         }
       } catch (error) {
-        console.error('Error fetching JWT from backend:', error);
+        console.error("Error fetching JWT from backend:", error);
       }
 
       return session;
