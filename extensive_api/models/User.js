@@ -25,6 +25,19 @@ const userSchema = new mongoose.Schema({
   image: {
     type: String, // Store user's Google profile picture
   },
+  plan: {
+    type: String,
+    enum: ['Free', 'Standard', 'Pro'], // Add your plans here
+    default: 'Free',
+  },
+  dailyStoryCreated: {
+    type: Number,
+    default: 0, // Track how many sentences the user has created today
+  },
+  lastResetDate: {
+    type: Date, // Track the last reset date
+    default: Date.now,
+  },
 });
 
 userSchema.pre('save', async function (next) {
