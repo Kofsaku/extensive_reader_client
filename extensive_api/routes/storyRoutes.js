@@ -10,10 +10,11 @@ const {
   toggleFavorite,
 } = require("../controller/storyController");
 const auth = require("../middleware/auth");
+const checkPlanLimit = require('../middleware/checkPlanLimit');
 
 const router = express.Router();
 
-router.post("/", auth, createStory);
+router.post("/", auth, checkPlanLimit, createStory);
 router.get("/", auth, getStories);
 router.get("/:id", auth, getStoryById);
 router.put("/:id", auth, updateStory);

@@ -98,5 +98,22 @@ router.post('/google-auth', async (req, res) => {
   }
 });
 
+router.post('/select-plan', auth, async (req, res) => {
+  const { plan } = req.body; // The plan the user wants to select
+
+  if (!['Free', 'Standard', 'Pro'].includes(plan)) {
+    return res.status(400).send('Invalid plan selected');
+  }
+
+  try {
+    const user = await User.findById(req.user.id);
+    user.plan = plan;
+    user.dailySentencesCreated = 0; // Reset sentence count on plan change
+    await user.save();
+    res.status(200).send(`Plan updated to ${plan}`);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 module.exports = router;

@@ -15,8 +15,12 @@ const createStory = async (req, res) => {
     user: req.user.id,
   };
   try {
+    const user = await User.findById(req.user.id);
     const story = new Story(newStory);
     const createdStory = await story.save();
+    user.dailyStoryCreated += 1;
+    await user.save();
+
     res.status(201).json(story);
   } catch (error) {
     res.status(400).json({ message: error.message });

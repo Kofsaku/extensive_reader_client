@@ -3,6 +3,7 @@ import Footer from "../../Footer/page.js";
 import FeatureCards from "../RecentStories/page.js";
 import GenerateStory from "@/components/HomePage/HomeContainer/GenerateStory/GenerateStoryModal.js";
 import Modal from "react-modal";
+import axios from 'axios';
 
 const customStyles = {
   content: {
@@ -22,10 +23,32 @@ const customStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 };
-const HomeContanier = ({ setSection }) => {
+const HomeContanier = ({ setSection, setReload }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
+
+  const getUserData = async () => {
+    try {
+      const jwtToken =
+        localStorage.getItem("authToken") || Cookies.get("authToken");
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`, // Include JWT in the Authorization header
+            "Content-Type": "application/json", // Specify the content type
+          },
+        }
+      );
+      if (response.data) {
+        return (response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching stories:", error);
+    }
+  }
 
   return (
     <>
@@ -35,13 +58,16 @@ const HomeContanier = ({ setSection }) => {
         style={customStyles}
         contentLabel="Generation Modal"
       >
-        <GenerateStory />
+        <GenerateStory
+          getUserData={getUserData}
+          closeModal={closeModal}
+        />
       </Modal>
       <div
         className="flex flex-col items-center justify-center p-10 bg-cover bg-center"
         style={{ backgroundImage: "url('images/bgHome.png')" }}
       >
-        <h1 className="text-4xl text-white font-bold mb-4">Hello Umar</h1>
+        <h1 className="text-4xl text-white font-bold mb-4">Welcome</h1>
         <button
           className="bg-gradient-to-r from-purple-400 to-blue-400 py-2 px-4 rounded-lg text-white font-semibold mb-4"
           onClick={openModal}

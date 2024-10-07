@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^4.6.0",
     "axios": "^1.7.2",
     "cookie": "^0.6.0",
     "js-cookie": "^3.0.5",
@@ -19,6 +20,7 @@
     "react-modal": "^3.16.1",
     "react-text-transition": "^3.1.0",
     "react-toastify": "^10.0.5",
+    "stripe": "^17.0.0",
     "thunder": "^0.2.0"
   },
   "devDependencies": {
