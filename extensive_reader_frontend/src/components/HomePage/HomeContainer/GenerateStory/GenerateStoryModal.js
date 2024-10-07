@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 
-const GenerateStory = ({setStory, setSection, closeModal}) => {
+const GenerateStory = ({getUserData, closeModal, setReload}) => {
   const router = useRouter();
   const [language, setLanguage] = useState('English');
   const [genre, setGenre] = useState('Action');
@@ -13,18 +13,62 @@ const GenerateStory = ({setStory, setSection, closeModal}) => {
   const [words, setWords] = useState('500');
   const [loading, setIsloading] = useState(false)
   
+
   const getStoryChatGPT = async (storyData) => {
-    const res = await axios.post('/api/chatgpt', { prompt: storyData });
-    console.log("resresresresresresresres", res.data.id)
-    toast.success("Story Created!")
-    // setStory(res.data.result);
-    // setSection(3)
-    if (loading) {
-      setIsloading(false)
+    const user = await getUserData();
+    
+    // Start loading indicator
+    setIsloading(true); 
+  
+    switch (user.plan) {
+      case 'Free Plan':
+        if (user.dailyStoryCreated >= 3) {
+          toast.error('Daily limit reached for Free Plan');
+          setIsloading(false);
+          closeModal();
+          return; // Exit the function after closing the modal
+        }
+        break; // Continue to the API call
+  
+      case 'Standard Plan':
+        if (user.dailyStoryCreated >= 10) {
+          toast.error('Daily limit reached for Standard Plan');
+          setIsloading(false);
+          closeModal();
+          return; // Exit the function after closing the modal
+        }
+        break; // Continue to the API call
+  
+      case 'Pro Plan':
+        // No limit for Pro Plan
+        break;
+  
+      default:
+        toast.error('User plan is not recognized');
+        setIsloading(false);
+        closeModal();
+        return; // Exit the function after closing the modal
     }
-    router.push(`/story?id=${res.data.id}`)
-    closeModal()
-  }
+
+    try {
+      const loadingToastId = toast.loading("Creating Story....");
+      const res = await axios.post('/api/chatgpt', { prompt: storyData });
+      debugger
+      console.log("Response ID:", res.data.id);
+      toast.update(loadingToastId, { render: "Story Created!", type: "success", isLoading: false, autoClose: 5000 });
+      // Redirect to the created story page
+      // router.replace(`/story?id=${res.data.id}`);
+      window.location.assign(`/story?id=${res.data.id}`)
+    } catch (error) {
+      console.error("Error creating story:", error);
+      toast.update(loadingToastId, { render: "Failed to create story. Please try again.", type: "error", isLoading: false, autoClose: 5000 });
+    } finally {
+      toast.dismiss(loadingToastId)
+      setIsloading(false); // Ensure loading is stopped
+      closeModal(); // Close the modal after processing
+    }
+  };
+  
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +82,6 @@ const GenerateStory = ({setStory, setSection, closeModal}) => {
     };
     console.log('Generated Story Data:', storyData);
     try {
-      toast.success("Creating Story....")
       setIsloading(true)
       getStoryChatGPT(storyData)
     } catch (error) {

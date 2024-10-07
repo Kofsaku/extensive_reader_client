@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenerateStory from '@/components/HomePage/HomeContainer/GenerateStory/GenerateStoryModal.js';
 import Modal from 'react-modal';
 import Link from "next/link";
+import axios from "axios";
 
 const customStyles = {
   content: {
@@ -22,11 +23,45 @@ const customStyles = {
   },
 };
 
-const Sidebar = ({setSection, setStory}) => {
-  
+const Sidebar = ({}) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
+  const [userData, setUserData] = useState({});
+  const [loading, setLoading] = useState(true);
+  
+  const getUserData = async () => {
+    try {
+      const jwtToken =
+        localStorage.getItem("authToken") || Cookies.get("authToken");
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`, // Include JWT in the Authorization header
+            "Content-Type": "application/json", // Specify the content type
+          },
+        }
+      );
+      if (response.data) {
+        return (response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching stories:", error);
+    }
+  }
+  
+  const fetchUserData = async () => {
+    setLoading(true); // Start loading
+    const data = await getUserData(); // Await the result of getUserData
+    setUserData(data); // Update state with the fetched user data
+    setLoading(false); // Stop loading
+  };
+  
+  useEffect(() => {
+    fetchUserData(); // Call the async function
+  }, []);
 
   return (
     <>
@@ -38,8 +73,7 @@ const Sidebar = ({setSection, setStory}) => {
       >
         <GenerateStory
           closeModal={closeModal}
-          setSection={setSection}
-          setStory={setStory}
+          getUserData={getUserData}
         />
       </Modal>
       <div className="flex flex-col h-full min-h-screen w-64 bg-gray-800 text-white p-4 sticky top-0">
@@ -219,7 +253,7 @@ const Sidebar = ({setSection, setStory}) => {
                   d="M13 16h-1v-1h1v1zm0 3h-1v-1h1v1zm0-9h-1v1h1v-1zm0 3h-1v1h1v-1zm-4 6h1v-1h-1v1zm0-3h1v-1h-1v1zm0-3h1v-1h-1v1zm0-3h1v-1h-1v1zm0 6h1v-1h-1v1zm4-9h-1v1h1V6zm0 3h-1v1h1V9zm0 3h-1v1h1v-1zm0 3h-1v1h1v-1z"
                 />
               </svg>
-              570 AI Credits
+               {userData && userData.dailyStoryCreated} Daily Story count
             </li>
           </ul>
         </nav>
@@ -227,8 +261,8 @@ const Sidebar = ({setSection, setStory}) => {
         <div className="mt-auto flex items-center">
           <div className="w-10 h-10 bg-gray-600 rounded-full mr-2"></div>
           <div>
-            <p className="font-semibold">Umar</p>
-            <span className="text-yellow-500">Free plan</span>
+            <p className="font-semibold">{userData && userData.name}</p>
+            <span className="text-yellow-500">{userData && userData.plan}</span>
           </div>
         </div>
       </div>

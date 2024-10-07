@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema({
   },
   plan: {
     type: String,
-    enum: ['Free', 'Standard', 'Pro'], // Add your plans here
-    default: 'Free',
+    enum: ['Free Plan', 'Standard Plan', 'Pro Plan'], // Add your plans here
+    default: 'Free Plan',
   },
   dailyStoryCreated: {
     type: Number,

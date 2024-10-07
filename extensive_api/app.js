@@ -1,4 +1,3 @@
-// app.js
 require("dotenv").config();
 
 const express = require("express");
@@ -20,13 +19,15 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Middleware
-app.use(bodyParser.json());
+// Webhook route with raw body middleware
+app.post('/api/webhook', express.raw({ type: 'application/json' }), webhookHandler);
+
+// Middleware for general routes (non-webhook)
+app.use(bodyParser.json()); // Regular JSON body parsing for non-webhook routes
 
 // Routes
 app.use("/api", userRoutes);
 app.use("/api/story", storyRoutes);
-app.post('/api/webhook', webhookHandler);
 
 // MongoDB connection
 mongoose
